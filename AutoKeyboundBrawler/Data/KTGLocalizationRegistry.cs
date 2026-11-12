@@ -536,4 +536,32 @@ public static class KTGLocalizationRegistry
         if (string.IsNullOrWhiteSpace(text)) return false;
         return LocalizedResultCloseButtonTexts.Any(b => text.Contains(b, StringComparison.OrdinalIgnoreCase));
     }
+
+    // ------------------------------------------------------------------------
+    // 10. Game Keyboard Warning Prompt (Addon sheet row 17826)
+    // ------------------------------------------------------------------------
+    public const uint KeyboardWarningAddonRowId = 17826;
+
+    /// <summary>
+    /// Removes every whitespace character so prompt text can be compared regardless of
+    /// line breaks, wrapping or spacing differences between the Excel sheet and the UI.
+    /// </summary>
+    public static string NormalizePromptText(string? text)
+    {
+        if (string.IsNullOrEmpty(text)) return string.Empty;
+        return string.Concat(text.Where(c => !char.IsWhiteSpace(c)));
+    }
+
+    /// <summary>
+    /// True when the visible SelectYesno prompt is the game's "No usable keyboard found"
+    /// warning (localized via Addon sheet row 17826).
+    /// </summary>
+    public static bool MatchesKeyboardWarningPrompt(string? promptText, string? expectedPromptText)
+    {
+        var prompt = NormalizePromptText(promptText);
+        var expected = NormalizePromptText(expectedPromptText);
+        return prompt.Length > 0 &&
+               expected.Length > 0 &&
+               string.Equals(prompt, expected, StringComparison.Ordinal);
+    }
 }

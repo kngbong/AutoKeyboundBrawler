@@ -152,6 +152,34 @@ public class CoreTests
     }
 
     [Fact]
+    public void TestKTGLocalizationRegistry_KeyboardWarningPrompt()
+    {
+        const string warning =
+            "A usable keyboard could not be found.\n" +
+            "Without the ability to input text, you will be unable to progress through the game.\n" +
+            "Are you sure you wish to play?";
+
+        Assert.Equal(17826u, KTGLocalizationRegistry.KeyboardWarningAddonRowId);
+
+        // Same text with different line breaks / spacing is matched.
+        Assert.True(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt(warning, warning));
+        Assert.True(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt(
+            "A usable keyboard could not be found. Without the ability to input text,\r\n you will be unable to progress through the game. Are you sure you wish to play?",
+            warning));
+        Assert.True(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt("  " + warning.Replace("\n", "  ") + "  ", warning));
+
+        // Different or empty prompts never match, so unrelated Yes/No dialogs are left alone.
+        Assert.False(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt("Quit Keybound Brawler?", warning));
+        Assert.False(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt(warning.Replace("play", "continue"), warning));
+        Assert.False(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt(null, warning));
+        Assert.False(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt(warning, null));
+        Assert.False(KTGLocalizationRegistry.MatchesKeyboardWarningPrompt("", ""));
+
+        Assert.Equal(string.Empty, KTGLocalizationRegistry.NormalizePromptText(null));
+        Assert.Equal("abc", KTGLocalizationRegistry.NormalizePromptText(" a\r\nb\tc "));
+    }
+
+    [Fact]
     public void TestKTGStateReader_IsDefenseSentence()
     {
         // Boss (slot 2) is NEVER defense

@@ -28,6 +28,13 @@
 2. Add custom repository: `https://raw.githubusercontent.com/kngbong/AutoKeyboundBrawler/master/repo.json`
 3. Install **AutoKeyboundBrawler** from the plugin installer
 
+## Fork fixes
+
+- **Duty confirmation:** clicks the native `CommenceButton` on `ContentsFinderConfirm`, so the duty is accepted reliably.
+- **Keyboard warning:** when the game shows *"A usable keyboard could not be found"* (common with KVM switches that re-enumerate the keyboard), the plugin answers **Yes** automatically and pauses all other automation while the popup is open. It never answers **No**, which would close the game.
+
+> If the warning keeps appearing after switching a KVM, connect a dedicated keyboard that always stays attached to the gaming PC, use a KVM with USB emulation, or switch back to the gaming PC before the queue pops.
+
 ## Features
 
 Multi-Language Support · Auto Buy Keybound Coffers · Humanized Typing · Smart Target Priority · Defense Preemption · Obstruction Safety · Obscured Word Memory · Punctuation Skip · AFK Duty Loop · Anti-AFK Kick Protection

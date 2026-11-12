@@ -35,6 +35,7 @@ public class KTGAutomationManager
     private readonly Dictionary<string, int> _rolledDelays = new();
 
     private bool _wasInHalt;
+    private bool _keyboardWarningActive;
 
 
     private string _lastSubmittedWord = string.Empty;
@@ -89,6 +90,36 @@ public class KTGAutomationManager
             _lastTargetSlotId = -1;
             _lastTargetWord = string.Empty;
             return;
+        }
+
+        // The game itself shows a SelectYesno warning when the keyboard is disconnected or
+        // re-enumerated (e.g. switching a KVM). Accept it with "Yes" and suppress every other
+        // automation path while it is open: answering "No" closes the game, and a stray shop
+        // close callback could also cancel the duty queue.
+        var keyboardWarningOpen = AddonKeyboardWarning.HandleIfOpen();
+        if (keyboardWarningOpen)
+        {
+            if (!_keyboardWarningActive)
+            {
+                _keyboardWarningActive = true;
+                _log?.Information("[AutoKeyboundBrawler] Game keyboard warning detected. Accepting it with Yes and pausing automation until it closes.");
+                if (_simulator.IsTyping) _simulator.Clear();
+                _nav.Stop();
+                _squareSubPhase = SquareSubPhase.Default;
+                _lastTargetSlotId = -1;
+                _lastTargetWord = string.Empty;
+            }
+
+            CurrentStatus = "Accepting game keyboard warning...";
+            return;
+        }
+
+        if (_keyboardWarningActive)
+        {
+            _keyboardWarningActive = false;
+            _lastActionTime = DateTime.UtcNow;
+            ConsumeHumanizedDelay();
+            _log?.Information("[AutoKeyboundBrawler] Keyboard warning dismissed. Resuming automation.");
         }
 
         CurrentPhase = KTGStateReader.GetCurrentPhase();

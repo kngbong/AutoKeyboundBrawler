@@ -335,6 +335,9 @@ public static unsafe class AddonKTGShop
     /// </summary>
     public static bool BuyOneCoffer()
     {
+        // The dedicated keyboard-warning handler owns this prompt; never treat it as a purchase confirmation.
+        if (AddonKeyboardWarning.IsKeyboardWarningOpen()) return false;
+
         // 0. Confirm Yes/No confirmation dialog if open
         if (TryGetSelectYesno(out var yesno))
         {
@@ -518,7 +521,11 @@ public static unsafe class AddonKTGShop
         {
             if (TryGetSelectYesno(out var yesno))
             {
-                Callback.Fire(yesno, true, 1);
+                // Never answer "No" on the game's keyboard warning: that is what closes the client.
+                if (!AddonKeyboardWarning.IsKeyboardWarningOpen())
+                {
+                    Callback.Fire(yesno, true, 1);
+                }
             }
 
             if (TryGetShopExchangeCurrencyDialog(out var curDiag))

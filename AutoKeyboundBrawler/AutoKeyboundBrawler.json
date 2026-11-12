@@ -2,7 +2,7 @@
   "Author": "1Stalk, kngbong",
   "Name": "AutoKeyboundBrawler",
   "Punchline": "Automated assistant and typing solver for Keybound Brawler.",
-  "Description": "Automates Keybound Brawler with human-like typing, AFK loop, multi-language (EN/DE/FR/JA), and penalty safety pauses. Fork with a fix for the duty confirmation dialog.",
+  "Description": "Automates Keybound Brawler with human-like typing, AFK loop, multi-language (EN/DE/FR/JA), and penalty safety pauses. Fork with fixes for the duty confirmation dialog and the game's keyboard warning popup.",
   "InternalName": "AutoKeyboundBrawler",
   "RepoUrl": "https://github.com/kngbong/AutoKeyboundBrawler",
   "IconUrl": "https://raw.githubusercontent.com/kngbong/AutoKeyboundBrawler/master/images/icon.png",
