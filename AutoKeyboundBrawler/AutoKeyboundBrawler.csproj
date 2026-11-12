@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
     <PropertyGroup>
-        <Authors>1Stalk</Authors>
-        <Version>1.0.8.0</Version>
+        <Authors>1Stalk, kngbong</Authors>
+        <Version>1.0.8.1</Version>
         <Description>Automated assistant and typing solver for Keybound Brawler.</Description>
         <AssemblyName>AutoKeyboundBrawler</AssemblyName>
         <RootNamespace>AutoKeyboundBrawler</RootNamespace>
